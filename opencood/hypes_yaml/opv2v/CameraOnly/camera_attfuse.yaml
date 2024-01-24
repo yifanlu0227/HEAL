@@ -1,0 +1,176 @@
+name: HeterBaseline_opv2v_camera_attfuse
+root_dir: "dataset/OPV2V/train"
+validate_dir: "dataset/OPV2V/validate"
+test_dir: "dataset/OPV2V/test"
+
+yaml_parser: "load_general_params"
+train_params:
+  batch_size: &batch_size 1
+  epoches: 20
+  eval_freq: 2
+  save_freq: 2
+  max_cav: 5
+
+comm_range: 70
+input_source: ['camera', 'depth']
+label_type: 'camera'
+cav_lidar_range: &cav_lidar [-51.2, -51.2, -3, 51.2, 51.2, 1]
+
+add_data_extension: ['bev_visibility.png']
+
+heter:
+  assignment_path: "opencood/logs/heter_modality_assign/opv2v_4modality.json" 
+  ego_modality: &ego_modality "m2"
+  mapping_dict:
+    m1: m2
+    m2: m2
+    m3: m2
+    m4: m2
+  modality_setting:
+    m2:
+      sensor_type: &sensor_type_m2 'camera'
+      core_method: &core_method_m2 "lift_splat_shoot"
+
+      grid_conf: &grid_conf_m2
+        xbound: [-51.2, 51.2, 0.4]   # Limit the range of the x direction and divide the grids
+        ybound: [-51.2, 51.2, 0.4]   # Limit the range of the y direction and divide the grids
+        zbound: [-10, 10, 20.0]   # Limit the range of the z direction and divide the grids
+        ddiscr: [2, 50, 48]
+        mode: 'LID'
+      data_aug_conf: &data_aug_conf_m2
+        resize_lim: [0.65, 0.7]
+        final_dim: [384, 512]
+        rot_lim: [-3.6, 3.6]
+        H: 600
+        W: 800
+        rand_flip: False
+        bot_pct_lim: [0.0, 0.05]
+        cams: ['camera0', 'camera1', 'camera2', 'camera3']
+        Ncams: 4
+
+fusion:
+  core_method: 'intermediateheter'
+  dataset: 'opv2v'
+  args: 
+    proj_first: false
+    grid_conf: None # place-holder
+    data_aug_conf: None # place-holder
+
+
+preprocess:
+  # options: BasePreprocessor, VoxelPreprocessor, BevPreprocessor
+  core_method: 'SpVoxelPreprocessor'
+  args:
+    voxel_size: [0.4, 0.4, 4] # useful
+    max_points_per_voxel: 1 # useless
+    max_voxel_train: 1 # useless
+    max_voxel_test: 1 # useless
+  # lidar range for each individual cav.
+  cav_lidar_range: *cav_lidar
+
+# anchor box related
+postprocess:
+  core_method: 'VoxelPostprocessor' # VoxelPostprocessor, BevPostprocessor supported
+  gt_range: *cav_lidar
+  anchor_args:
+    cav_lidar_range: *cav_lidar
+    l: 3.9
+    w: 1.6
+    h: 1.56
+    r: &anchor_yaw [0, 90]
+    feature_stride: 2
+    num: &anchor_num 2
+  target_args:
+    pos_threshold: 0.6
+    neg_threshold: 0.45
+    score_threshold: 0.2
+  order: 'hwl' # hwl or lwh
+  max_num: 150 # maximum number of objects in a single frame. use this number to make sure different frames has the same dimension in the same batch
+  nms_thresh: 0.15
+  dir_args: &dir_args
+    dir_offset: 0.7853
+    num_bins: 2
+    anchor_yaw: *anchor_yaw
+
+# model related
+model:
+  core_method: heter_model_baseline
+  args:
+    ego_modality: *ego_modality
+    lidar_range: *cav_lidar
+
+    m2:
+      core_method: *core_method_m2
+      sensor_type: *sensor_type_m2
+
+      encoder_args:
+        anchor_number: *anchor_num
+        grid_conf: *grid_conf_m2
+        data_aug_conf: *data_aug_conf_m2
+        img_downsample: 8
+        img_features: &img_feature 128
+        use_depth_gt: false
+        depth_supervision: true
+        camera_encoder: EfficientNet
+
+      camera_mask_args:
+        cav_lidar_range: *cav_lidar
+        grid_conf: *grid_conf_m2
+
+      backbone_args:
+        layer_nums: [3, 5, 8]
+        layer_strides: [2, 2, 2]
+        num_filters: [64, 128, 256]
+        upsample_strides: [1, 2, 4]
+        num_upsample_filter: [128, 128, 128]
+        inplanes: 128
+  
+      shrink_header: 
+        kernal_size: [ 3 ]
+        stride: [ 1 ]
+        padding: [ 1 ]
+        dim: [ 256 ]
+        input_dim: 384 # 128 * 3
+
+    fusion_method: att 
+    att:
+      feat_dim: 256
+
+    in_head: 256
+    
+    anchor_number: *anchor_num
+    dir_args: *dir_args
+
+loss:
+  core_method: point_pillar_depth_loss
+  args:
+    pos_cls_weight: 2.0
+    cls:
+      type: 'SigmoidFocalLoss'
+      alpha: 0.25
+      gamma: 2.0
+      weight: 1.0
+    reg:
+      type: 'WeightedSmoothL1Loss'
+      sigma: 3.0
+      codewise: true
+      weight: 2.0
+    dir:
+      type: 'WeightedSoftmaxClassificationLoss'
+      weight: 0.2
+      args: *dir_args
+    depth:
+      weight: 1.0
+
+optimizer:
+  core_method: Adam
+  lr: 0.002
+  args:
+    eps: 1e-10
+    weight_decay: 1e-4
+
+lr_scheduler:
+  core_method: multistep #step, multistep and Exponential support
+  gamma: 0.1
+  step_size: [10, 25]
+

@@ -1,0 +1,182 @@
+name: HeterBaseline_opv2v_lidar_cobevt
+root_dir: "dataset/OPV2V/train"
+validate_dir: "dataset/OPV2V/validate"
+test_dir: "dataset/OPV2V/test"
+
+yaml_parser: "load_general_params"
+train_params:
+  batch_size: &batch_size 2
+  epoches: 40
+  eval_freq: 2
+  save_freq: 2
+  max_cav: &max_cav 5
+
+comm_range: 70
+input_source: ['lidar']
+label_type: 'lidar'
+cav_lidar_range: &cav_lidar [-102.4, -102.4, -3, 102.4, 102.4, 1]
+
+heter:
+  assignment_path: "opencood/logs/heter_modality_assign/opv2v_4modality.json" 
+  ego_modality: &ego_modality "m1"
+  mapping_dict:
+    m1: m1
+    m2: m1
+    m3: m1
+    m4: m1
+  modality_setting:
+    m1:
+      sensor_type: &sensor_type_m1 'lidar'
+      core_method: &core_method_m1 "point_pillar"
+
+      # lidar requires preprocess
+      preprocess:
+        # options: BasePreprocessor, VoxelPreprocessor, BevPreprocessor
+        core_method: 'SpVoxelPreprocessor'
+        args:
+          voxel_size: &voxel_size [0.4, 0.4, 4]
+          max_points_per_voxel: 32
+          max_voxel_train: 32000
+          max_voxel_test: 70000
+        # lidar range for each individual cav.
+        cav_lidar_range: *cav_lidar
+
+
+fusion:
+  core_method: 'intermediateheter'
+  dataset: 'opv2v'
+  args: 
+    proj_first: false
+    grid_conf: None # place-holder
+    data_aug_conf: None # place-holder
+
+data_augment: # no use in intermediate fusion
+  - NAME: random_world_flip
+    ALONG_AXIS_LIST: [ 'x' ]
+
+  - NAME: random_world_rotation
+    WORLD_ROT_ANGLE: [ -0.78539816, 0.78539816 ]
+
+  - NAME: random_world_scaling
+    WORLD_SCALE_RANGE: [ 0.95, 1.05 ]
+
+preprocess:
+  # options: BasePreprocessor, VoxelPreprocessor, BevPreprocessor
+  core_method: 'SpVoxelPreprocessor'
+  args:
+    voxel_size: [0.4, 0.4, 4] # useful
+    max_points_per_voxel: 1 # useless
+    max_voxel_train: 1 # useless
+    max_voxel_test: 1 # useless
+  # lidar range for each individual cav.
+  cav_lidar_range: *cav_lidar
+
+# anchor box related
+postprocess:
+  core_method: 'VoxelPostprocessor' # VoxelPostprocessor, BevPostprocessor supported
+  gt_range: *cav_lidar
+  anchor_args:
+    cav_lidar_range: *cav_lidar
+    l: 3.9
+    w: 1.6
+    h: 1.56
+    r: &anchor_yaw [0, 90]
+    feature_stride: 4
+    num: &anchor_num 2
+  target_args:
+    pos_threshold: 0.6
+    neg_threshold: 0.45
+    score_threshold: 0.2
+  order: 'hwl' # hwl or lwh
+  max_num: 150 # maximum number of objects in a single frame. use this number to make sure different frames has the same dimension in the same batch
+  nms_thresh: 0.15
+  dir_args: &dir_args
+    dir_offset: 0.7853
+    num_bins: 2
+    anchor_yaw: *anchor_yaw
+
+# model related
+model:
+  core_method: heter_model_baseline
+  args:
+    ego_modality: *ego_modality
+    lidar_range: *cav_lidar
+
+    m1:
+      core_method: *core_method_m1
+      sensor_type: *sensor_type_m1
+
+      encoder_args:
+        voxel_size: *voxel_size
+        lidar_range: *cav_lidar
+        pillar_vfe:
+          use_norm: true
+          with_distance: false
+          use_absolute_xyz: true
+          num_filters: [64]
+        point_pillar_scatter:
+          num_features: 64
+
+      backbone_args:
+        layer_nums: [3, 5, 8]
+        layer_strides: [2, 2, 2]
+        num_filters: [64, 128, 256]
+        upsample_strides: [1, 2, 4]
+        num_upsample_filter: [128, 128, 128]
+  
+      shrink_header: 
+        kernal_size: [ 3 ]
+        stride: [ 2 ]
+        padding: [ 1 ]
+        dim: [ 256 ]
+        input_dim: 384 # 128 * 3
+
+    fusion_method: cobevt
+
+    cobevt:
+      input_dim: 256
+      mlp_dim: 256
+      agent_size: *max_cav
+      window_size: 4
+      dim_head: 32
+      drop_out: 0.1
+      depth: 3
+
+    in_head: 256
+    
+    anchor_number: *anchor_num
+    dir_args: *dir_args
+
+loss:
+  core_method: point_pillar_depth_loss
+  args:
+    pos_cls_weight: 2.0
+    cls:
+      type: 'SigmoidFocalLoss'
+      alpha: 0.25
+      gamma: 2.0
+      weight: 1.0
+    reg:
+      type: 'WeightedSmoothL1Loss'
+      sigma: 3.0
+      codewise: true
+      weight: 2.0
+    dir:
+      type: 'WeightedSoftmaxClassificationLoss'
+      weight: 0.2
+      args: *dir_args
+    depth:
+      weight: 1.0
+
+optimizer:
+  core_method: Adam
+  lr: 0.001
+  args:
+    eps: 1e-10
+    weight_decay: 1e-4
+
+lr_scheduler:
+  core_method: multistep #step, multistep and Exponential support
+  gamma: 0.1
+  step_size: [10, 30, 50]
+
