@@ -88,7 +88,10 @@ HEAL/dataset
 
 ## Installation
 
-Follow [opencood's installation guide](https://opencood.readthedocs.io/en/latest/md_files/installation.html). Note that spconv 2.x are much easier to install, but our experiments and checkpoints follow spconv 1.2.1. If you do not mind training from scratch, spconv 2.x is recommended.
+Follow [opencood's installation guide](https://opencood.readthedocs.io/en/latest/md_files/installation.html). Remember to use our `environment.yml` or `requirements.txt` instead of OpenCOOD's. 
+
+Note that spconv 2.x are much easier to install, but our experiments and checkpoints follow spconv 1.2.1. If you do not mind training from scratch, spconv 2.x is recommended.
+
 
 After all steps in [opencood's installation guide](https://opencood.readthedocs.io/en/latest/md_files/installation.html), install pypcd by hand for DAIR-V2X LiDAR loader.
 
