@@ -1,7 +1,11 @@
 # HEAL (HEterogeneous ALliance)
 [ICLR2024] HEAL: An Extensible Framework for Open Heterogeneous Collaborative Perception
 
-This repo is also an **unified** and **comprehensive** multi-agent collaborative perception framework for **LiDAR-based**, **camera-based** and **heterogeneous** setting! You can achieve any collaboration configuration you want here!
+This repo is also an **unified** and **comprehensive** multi-agent collaborative perception framework for **LiDAR-based**, **camera-based** and **heterogeneous** setting! 
+
+Through powerful code integration, you can access **4 datasets**, **the latest collaborative perception methods**, and **multiple modality** here. This is the most complete collaboration perception framework available.
+
+>通过强大的代码集成，您可以在本仓库使用**4个数据集**、**最新协同感知方法**、**LiDAR和Camera多模态**。这是目前最完整的协作感知框架。
 
 [OpenReview](https://openreview.net/forum?id=KkrDUGIASk)
 
