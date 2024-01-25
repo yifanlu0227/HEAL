@@ -12,8 +12,6 @@ Through powerful code integration, you can access **4 datasets**, **the latest c
 
 ![HEAL Teaser](images/teaser5.jpg)
 
-![HEAL](images/heal_main.jpg)
-
 ## Repo Feature
 
 - Modality Support
@@ -161,6 +159,10 @@ Note that there will be some differences in the weight key names of their two mo
 
 
 ## HEAL's Train Command
+<div align="center">
+<img src="images/heal_main.jpg" width="80%" >
+</div>
+
 HEAL will first train a collaboration base and then align new agent type to this base. Follows our paper, we select LiDAR w/ PointPillars as our collaboration base.
 ### Step 1: Train the Collaboration Base
 Suppose you are now in the `HEAL/` folder. If this is your first training attempt, execute `mkdir opencood/logs`. Then 
