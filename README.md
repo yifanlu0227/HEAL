@@ -10,6 +10,8 @@ Through powerful code integration, you can access **4 datasets**, **the latest c
 
 [OpenReview](https://openreview.net/forum?id=KkrDUGIASk)
 
+![HEAL Teaser](images/teaser5.jpg)
+
 ![HEAL](images/heal_main.jpg)
 
 ## Repo Feature
@@ -220,6 +222,22 @@ python opencood/tools/inference_heter_in_order.py --model_dir opencood/logs/HEAL
 ```
 This will overwrite many parameters in `config.yaml`, including `mapping_dict`, `comm_range`, and gradually adding m1, m2, m3, m4 agent into the scene. Ground-truth will always be `max_cav`'s fused gt boxes.
 
+## Real-World Practice Rationale
+Take the DAIR-V2X dataset as an example, which consists of one vehicle and one Road-side Unit(RSU). We first trained the Pyramid Fusion using the vehicle and the RSU’s data as the collaboration base. Subsequently, we distributed the vehicle’s raw data and the Pyramid Fusion’s weights to various companies, allowing them to train their respective models locally.
+<div align="center">
+<img src="images/real-world.jpg" width="50%" >
+</div>
 
 ## Benchmark Checkpoints
-Coming Soon.
+We store our checkpoints files in [HEAL's Huggingface Hub](https://huggingface.co/yifanlu/HEAL/tree/main).
+
+## Citation
+```
+@inproceedings{
+lu2024an,
+title={An Extensible Framework for Open Heterogeneous Collaborative Perception},
+author={Lu, Yifan and Hu, Yue and Zhong, Yiqi and Wang, Dequan and Chen, Siheng and Wang, Yanfeng},
+booktitle={The Twelfth International Conference on Learning Representations},
+year={2024},
+}
+```
