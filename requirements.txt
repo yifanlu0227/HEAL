@@ -1,10 +1,9 @@
 cmake
 easydict~=1.9
 numpy
-numba==0.49.0
-opencv-python~=4.5.1.48
-matplotlib~=3.3.3
-scipy~=1.5.4
+numba
+opencv-python-headless~=4.5.1.48
+scipy
 scikit-image
 tqdm
 PyYAML
@@ -19,5 +18,5 @@ icecream
 h5py
 pyquaternion
 efficientnet_pytorch==0.7.0
-pillow
 scikit_learn
+python-lzf

@@ -92,25 +92,62 @@ HEAL/dataset
 
 
 ## Installation
-
-Follow [opencood's installation guide](https://opencood.readthedocs.io/en/latest/md_files/installation.html). Remember to use our `environment.yml` or `requirements.txt` instead of OpenCOOD's. 
-
-Note that spconv 2.x are much easier to install, but our experiments and checkpoints follow spconv 1.2.1. If you do not mind training from scratch, spconv 2.x is recommended.
-
-
-After all steps in [opencood's installation guide](https://opencood.readthedocs.io/en/latest/md_files/installation.html), install pypcd by hand for DAIR-V2X LiDAR loader.
-
-``` bash
-# go to another folder. Do not clone it within HEAL
-git clone https://github.com/klintan/pypcd.git
-cd pypcd
-pip install python-lzf
-python setup.py install
+### Step 1: Basic Installation
+```bash
+conda create -n heal python=3.8
+conda activate heal
+# install pytorch. Cudatoolkit 11.3 are tested in our experiment.
+conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=11.3 -c pytorch -c conda-forge
+# install dependency
+pip install -r requirements.txt
+# install this project. It's OK if EasyInstallDeprecationWarning shows up.
+python setup.py develop
 ```
 
-To align with the previous version of assignment_path in our checkpoint, please make a copy under the logs folder
+
+### Step 2: Install Spconv (1.2.1 or 2.x)
+We support both spconv 1.2.1 and 2.x to generate voxel features. 
+
+To install spconv 1.2.1, please follow the guide in https://github.com/traveller59/spconv/tree/v1.2.1.
+
+To install spconv 2.x, please run the following commands (if you are using cuda 11.3):
+```python
+pip install spconv-cu113
+```
+#### Tips for installing spconv 1.2.1:
+1. make sure your cmake version >= 3.13.2
+2. CUDNN and CUDA runtime library (use `nvcc --version` to check) needs to be installed on your machine.
+
+**Note that** spconv 2.x are much easier to install, but our experiments and checkpoints follow spconv 1.2.1. If you do not mind training from scratch, spconv 2.x is recommended.
+
+
+
+### Step 3: Bbx IoU cuda version compile
+Install bbx nms calculation cuda version
+  
+```bash
+python opencood/utils/setup.py build_ext --inplace
+```
+
+### Step 4: Install pypcd by hand for DAIR-V2X LiDAR loader.
+
+``` bash
+pip install git+https://github.com/klintan/pypcd.git
+```
+
+### Step 5: Dependencies for FPV-RCNN (optional)
+Install the dependencies for fpv-rcnn.
+  
 ```bash
 cd HEAL
+python opencood/pcdet_utils/setup.py build_ext --inplace
+```
+
+
+---
+To align with our agent-type assignment in our experiments, please make a copy of the assignment file under the logs folder
+```bash
+# in HEAL directory
 mkdir opencood/logs
 cp -r opencood/modality_assign opencood/logs/heter_modality_assign
 ```
