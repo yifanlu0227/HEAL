@@ -8,7 +8,7 @@ Through powerful code integration, you can access **4 datasets**, **the latest c
 
 >通过强大的代码集成，您可以在本仓库使用**4个数据集**、**最新协同感知方法**、**多模态数据**。这是目前最完整的协作感知框架。
 
-[OpenReview](https://openreview.net/forum?id=KkrDUGIASk)
+[OpenReview](https://openreview.net/forum?id=KkrDUGIASk) | [ArXiv](https://arxiv.org/abs/2401.13964) | [Zhihu](https://zhuanlan.zhihu.com/p/682084451)
 
 ![HEAL Teaser](images/teaser5.jpg)
 
