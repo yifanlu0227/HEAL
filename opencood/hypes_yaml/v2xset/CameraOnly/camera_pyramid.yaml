@@ -12,11 +12,9 @@ train_params:
   max_cav: 5
 
 comm_range: 70
-input_source: ['camera', 'depth']
+input_source: ['camera']
 label_type: 'camera'
 cav_lidar_range: &cav_lidar [-51.2, -51.2, -3, 51.2, 51.2, 1]
-
-add_data_extension: ['bev_visibility.png']
 
 heter:
   assignment_path: "opencood/logs/heter_modality_assign/v2xset_4modality.json" 
