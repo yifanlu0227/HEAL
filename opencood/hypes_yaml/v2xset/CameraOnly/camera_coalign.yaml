@@ -137,7 +137,8 @@ model:
         core_method: identity
 
     fusion_method: att
-      feat_dim: [64, 128, 256]
+      att:
+        feat_dim: [64, 128, 256]
 
     fusion_backbone:
       layer_nums: [3, 5, 8]
