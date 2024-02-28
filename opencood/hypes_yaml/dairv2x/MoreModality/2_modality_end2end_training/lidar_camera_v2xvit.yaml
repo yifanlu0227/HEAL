@@ -19,7 +19,7 @@ label_type: 'lidar'
 cav_lidar_range: &cav_lidar [-102.4, -51.2, -3.5, 102.4, 51.2, 1.5]
 
 heter:
-  assignment_path: None
+  assignment_path: null
   ego_modality: &ego_modality "m1&m2"
   mapping_dict:
     m1: m1
