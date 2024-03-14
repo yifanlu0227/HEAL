@@ -78,13 +78,13 @@ def load_depth_files(cav_path, timestamp, name):
         The list containing all camera png file paths.
     """
     camera0_file = os.path.join(cav_path,
-                                timestamp + f'_{name}0.png').replace("OPV2V", "OPV2V_H")
+                                timestamp + f'_{name}0.png').replace("OPV2V", "OPV2V_Hetero")
     camera1_file = os.path.join(cav_path,
-                                timestamp + f'_{name}1.png').replace("OPV2V", "OPV2V_H")
+                                timestamp + f'_{name}1.png').replace("OPV2V", "OPV2V_Hetero")
     camera2_file = os.path.join(cav_path,
-                                timestamp + f'_{name}2.png').replace("OPV2V", "OPV2V_H")
+                                timestamp + f'_{name}2.png').replace("OPV2V", "OPV2V_Hetero")
     camera3_file = os.path.join(cav_path,
-                                timestamp + f'_{name}3.png').replace("OPV2V", "OPV2V_H")
+                                timestamp + f'_{name}3.png').replace("OPV2V", "OPV2V_Hetero")
 
     return [camera0_file, camera1_file, camera2_file, camera3_file]
 

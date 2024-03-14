@@ -148,7 +148,7 @@ class OPV2VBaseDataset(Dataset):
                     camera_files = self.find_camera_files(cav_path, 
                                                 timestamp)
                     depth_files = self.find_camera_files(cav_path, 
-                                                timestamp, sensor="depth").replace("OPV2V", "OPV2V-H")
+                                                timestamp, sensor="depth").replace("OPV2V", "OPV2V_Hetero")
 
                     self.scenario_database[i][cav_id][timestamp]['yaml'] = \
                         yaml_file

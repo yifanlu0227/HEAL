@@ -87,9 +87,9 @@ class Adaptor:
         Currently only support OPV2V
         """
         if self.lidar_channels_dict.get(cav_modality, None) == 32:
-            return lidar_file_path.replace("OPV2V","OPV2V_H").replace(".pcd", "_32.pcd")
+            return lidar_file_path.replace("OPV2V","OPV2V_Hetero").replace(".pcd", "_32.pcd")
         if self.lidar_channels_dict.get(cav_modality, None) == 16:
-            return lidar_file_path.replace("OPV2V","OPV2V_H").replace(".pcd", "_16.pcd")
+            return lidar_file_path.replace("OPV2V","OPV2V_Hetero").replace(".pcd", "_16.pcd")
         return lidar_file_path
 
 
