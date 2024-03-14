@@ -189,8 +189,6 @@ model:
       input_dim: 384 # 128 * 3
 
     in_head: 256    
-
-    in_head: 256
     
     anchor_number: *anchor_num
     dir_args: *dir_args
