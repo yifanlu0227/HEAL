@@ -78,13 +78,13 @@ def load_depth_files(cav_path, timestamp, name):
         The list containing all camera png file paths.
     """
     camera0_file = os.path.join(cav_path,
-                                timestamp + f'_{name}0.png').replace("OPV2V", "OPV2V_Hetero")
+                                timestamp + f'_{name}0.png').replace("OPV2V", "OPV2V_H")
     camera1_file = os.path.join(cav_path,
-                                timestamp + f'_{name}1.png').replace("OPV2V", "OPV2V_Hetero")
+                                timestamp + f'_{name}1.png').replace("OPV2V", "OPV2V_H")
     camera2_file = os.path.join(cav_path,
-                                timestamp + f'_{name}2.png').replace("OPV2V", "OPV2V_Hetero")
+                                timestamp + f'_{name}2.png').replace("OPV2V", "OPV2V_H")
     camera3_file = os.path.join(cav_path,
-                                timestamp + f'_{name}3.png').replace("OPV2V", "OPV2V_Hetero")
+                                timestamp + f'_{name}3.png').replace("OPV2V", "OPV2V_H")
 
     return [camera0_file, camera1_file, camera2_file, camera3_file]
 
@@ -216,10 +216,6 @@ def parallel_cleaup(scenario_folders):
 if __name__=="__main__":
 
     MP_NUM = 8
-    MACHINE_NUM = 1
-    
-    if MACHINE_NUM != 1:
-        machine_idx = eval(sys.argv[1]) # 0,1,2,3
 
     split_folders = [f"/GPFS/rhome/yifanlu/workspace/OpenCOODv2/dataset/OPV2V/{split}" for split in ['train', 'validate', 'test']]
     scenario_folders = []
@@ -230,21 +226,17 @@ if __name__=="__main__":
                                     for x in os.listdir(root_dir) if
                                     os.path.isdir(os.path.join(root_dir, x))])
 
-    """
-    single machine 
-    """
-    if MACHINE_NUM == 1:
-        mp_split = np.array_split(scenario_folders, MP_NUM)
-        mp_split = [x.tolist() for x in mp_split]
 
-        for i in range(MP_NUM):
-            p = Process(target=parallel_check, args=(mp_split[i],))
-            p.start()
+    # mp_split = np.array_split(scenario_folders, MP_NUM)
+    # mp_split = [x.tolist() for x in mp_split]
 
-    if MACHINE_NUM > 1:
-        mp_split = np.array_split(scenario_folders, MP_NUM * MACHINE_NUM)
-        mp_split = [x.tolist() for x in mp_split]
+    # for i in range(MP_NUM):
+    #     p = Process(target=parallel_check, args=(mp_split[i],))
+    #     p.start()
 
-        for i in range(machine_idx*MP_NUM, (machine_idx+1)*MP_NUM):
-            p = Process(target=parallel_transform, args=(mp_split[i],))
-            p.start()
+    mp_split = np.array_split(scenario_folders, MP_NUM)
+    mp_split = [x.tolist() for x in mp_split]
+
+    for i in range(MP_NUM):
+        p = Process(target=parallel_transform, args=(mp_split[i],))
+        p.start()
