@@ -11,7 +11,6 @@ from collections import OrderedDict, Counter
 from opencood.models.sub_modules.base_bev_backbone_resnet import ResNetBEVBackbone 
 from opencood.models.sub_modules.downsample_conv import DownsampleConv
 import importlib
-from opencood.models.sub_modules.roi_align_fe import RoIAlignFeatureExtractor
 
 
 class HeterModelLate(nn.Module):
@@ -67,10 +66,6 @@ class HeterModelLate(nn.Module):
             setattr(self, f'reg_head_{modality_name}', nn.Conv2d(in_head, args['anchor_number'] * 7, kernel_size=1))
             setattr(self, f'dir_head_{modality_name}', nn.Conv2d(in_head, args['anchor_number'] *  args['dir_args']['num_bins'], kernel_size=1))
 
-        if 'rafe' in args:
-            self.rafe = RoIAlignFeatureExtractor(args['rafe'])
-        else:
-            self.rafe = None
 
     def forward(self, data_dict):
         output_dict = {}
@@ -97,11 +92,6 @@ class HeterModelLate(nn.Module):
         # Here we do not use layer0 of the "self.layers_{modality_name}"
         # We assume feature from the "self.backbone_{modality_name}" is the first-scale feature
         feature_list = [feature]
-
-        # rafe
-        if self.rafe is not None:
-            self.rafe(data_dict, feature)
-            
 
         for i in range(1, eval(f"self.layers_num_{modality_name}")):
             feature = eval(f"self.layers_{modality_name}").get_layer_i_feature(feature, layer_i=i)
