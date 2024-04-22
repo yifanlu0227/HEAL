@@ -105,22 +105,14 @@ python setup.py develop
 ```
 
 
-### Step 2: Install Spconv (1.2.1 or 2.x)
-We support both spconv 1.2.1 and 2.x to generate voxel features. 
+### Step 2: Install Spconv (1.2.1 or ~~2.x~~)
+We use spconv 1.2.1 to generate voxel features. 
 
 To install spconv 1.2.1, please follow the guide in https://github.com/traveller59/spconv/tree/v1.2.1.
 
-To install spconv 2.x, please run the following commands (if you are using cuda 11.3):
-```python
-pip install spconv-cu113
-```
 #### Tips for installing spconv 1.2.1:
 1. make sure your cmake version >= 3.13.2
 2. CUDNN and CUDA runtime library (use `nvcc --version` to check) needs to be installed on your machine.
-
-**Note that** spconv 2.x are much easier to install, but our experiments and checkpoints follow spconv 1.2.1. If you do not mind training from scratch, spconv 2.x is recommended.
-
-
 
 ### Step 3: Bbx IoU cuda version compile
 Install bbx nms calculation cuda version
