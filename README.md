@@ -97,7 +97,7 @@ HEAL/dataset
 conda create -n heal python=3.8
 conda activate heal
 # install pytorch. Cudatoolkit 11.3 are tested in our experiment.
-conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=11.3 -c pytorch -c conda-forge
+conda create -n coalign python=3.8 pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.6 -c pytorch -c conda-forge
 # install dependency
 pip install -r requirements.txt
 # install this project. It's OK if EasyInstallDeprecationWarning shows up.
@@ -109,10 +109,7 @@ python setup.py develop
 We use spconv 1.2.1 to generate voxel features. 
 
 To install spconv 1.2.1, please follow the guide in https://github.com/traveller59/spconv/tree/v1.2.1.
-
-#### Tips for installing spconv 1.2.1:
-1. make sure your cmake version >= 3.13.2
-2. CUDNN and CUDA runtime library (use `nvcc --version` to check) needs to be installed on your machine.
+You can also get a detailed installation guide in [CoAlign Installation Doc](https://udtkdfu8mk.feishu.cn/docx/LlMpdu3pNoCS94xxhjMcOWIynie#doxcn5rISC6NcfXIUnWFnXhTEzd).
 
 ### Step 3: Bbx IoU cuda version compile
 Install bbx nms calculation cuda version
