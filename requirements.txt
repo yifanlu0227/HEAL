@@ -20,3 +20,4 @@ pyquaternion
 efficientnet_pytorch==0.7.0
 scikit_learn
 python-lzf
+termcolor

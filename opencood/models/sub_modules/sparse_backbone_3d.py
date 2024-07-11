@@ -1,5 +1,5 @@
 from functools import partial
-
+from termcolor import colored
 import spconv
 import torch.nn as nn
 
@@ -37,6 +37,13 @@ class VoxelBackBone8x(nn.Module):
         norm_fn = partial(nn.BatchNorm1d, eps=1e-3, momentum=0.01)
 
         self.sparse_shape = grid_size[::-1] + [1, 0, 0]
+
+        if input_channels == 64:
+            print(f"{colored('[Warning]', 'red', attrs=['bold'])}", 
+                  f"{colored('In this checkpoint and configuration yaml (typically provided by the author), SECOND model has wrong `encoder_args`-`spconv`-`num_features_in`.', 'red')}\n",
+                  f"{colored('It is supposed to be 4, but is provided with 64.', 'red')}\n",
+                  f"{colored('Though you can still run the model due to no sanity check in spconv 1.2.1 and get reasonable performance,', 'red')}",
+                  f"{colored('it is not a correct convolution. See discussion in HEAL issue 20. ', 'red')}")
 
         self.conv_input = SparseSequential(
             SubMConv3d(input_channels, 16, 3, padding=1, bias=False, indice_key='subm1'),

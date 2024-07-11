@@ -113,7 +113,7 @@ model:
         mean_vfe:
           num_point_features: 4
         spconv:
-          num_features_in: 64
+          num_features_in: 4
           num_features_out: 64
         map2bev:
           feature_num: 128

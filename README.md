@@ -105,11 +105,16 @@ python setup.py develop
 ```
 
 
-### Step 2: Install Spconv (1.2.1 or ~~2.x~~)
-We use spconv 1.2.1 to generate voxel features. 
+### Step 2: Install Spconv (1.2.1 or 2.x)
+We use spconv 1.2.1 or spconv 2.x to generate voxel features. 
 
-To install spconv 1.2.1, please follow the guide in https://github.com/traveller59/spconv/tree/v1.2.1.
+To install **spconv 1.2.1**, please follow the guide in https://github.com/traveller59/spconv/tree/v1.2.1.
 You can also get a detailed installation guide in [CoAlign Installation Doc](https://udtkdfu8mk.feishu.cn/docx/LlMpdu3pNoCS94xxhjMcOWIynie#doxcn5rISC6NcfXIUnWFnXhTEzd).
+
+To install **spconv 2.x**, check the [table](https://github.com/traveller59/spconv#spconv-spatially-sparse-convolution-library) to run the installation command. For example we have cudatoolkit 11.6, then we should run
+```bash
+pip install spconv-cu116 # match your cudatoolkit version
+```
 
 ### Step 3: Bbx IoU cuda version compile
 Install bbx nms calculation cuda version
@@ -268,6 +273,10 @@ Take the DAIR-V2X dataset as an example, which consists of one vehicle and one R
 
 ## Benchmark Checkpoints
 We store our checkpoints files in [HEAL's Huggingface Hub](https://huggingface.co/yifanlu/HEAL/tree/main).
+
+Update: Those checkpoints has a faulty input channel number for SECOND related models, but you can still run them with spconv 1.2.1 (because spconv 1.2.1 has no sanity check). The performance should degrade but it still looks reasonable. More discussion can be found in [Issue 20](https://github.com/yifanlu0227/HEAL/issues/20). 
+
+If you want to compare with HEAL's model and you use spconv 1.2.1, you can still load from the checkpoint. To develop your model, please do not use these checkpoints.
 
 ## Citation
 ```
