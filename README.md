@@ -124,13 +124,7 @@ Install bbx nms calculation cuda version
 python opencood/utils/setup.py build_ext --inplace
 ```
 
-### Step 4: Install pypcd by hand for DAIR-V2X LiDAR loader.
-
-``` bash
-pip install git+https://github.com/klintan/pypcd.git
-```
-
-### Step 5: Dependencies for FPV-RCNN (optional)
+### Step 4: Dependencies for FPV-RCNN (optional)
 Install the dependencies for fpv-rcnn.
   
 ```bash
