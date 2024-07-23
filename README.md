@@ -96,7 +96,7 @@ HEAL/dataset
 ```bash
 conda create -n heal python=3.8
 conda activate heal
-# install pytorch. Cudatoolkit 11.3 are tested in our experiment.
+# install pytorch. 
 conda create -n coalign python=3.8 pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.6 -c pytorch -c conda-forge
 # install dependency
 pip install -r requirements.txt
