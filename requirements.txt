@@ -12,7 +12,6 @@ cython
 tensorboardX
 shapely==2.0.0
 einops
-cumm
 timm
 icecream
 h5py
