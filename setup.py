@@ -24,5 +24,5 @@ setup(
     description='An opensource pytorch framework for autonomous driving '
                 'cooperative detection',
     long_description=open("README.md").read(),
-    install_requires=_read_requirements_file(),
+    install_requires=[],
 )
