@@ -2,11 +2,11 @@
 [ICLR2024] HEAL: An Extensible Framework for Open Heterogeneous Collaborative Perception
 
 This repo is also a **unified** and **integrated** multi-agent collaborative perception framework for **LiDAR-based**, **camera-based** and **heterogeneous** setting! 
-> 这个仓库同时是一个**统一**且**高度集成**的多智能体协作感知框架，适用于 **纯LiDAR**、**纯Camera**和**异构** 实验设置。
+> 这个仓库同时是一个**统一**且**高集成**的多智能体协作感知框架，适用于 **纯LiDAR**、**纯Camera**和**异构** 实验设置。
 
 Through powerful code integration, you can access **4 datasets**, **the latest collaborative perception methods**, and **multiple modality** here. This is the most complete collaboration perception framework available.
 
->通过强大的代码集成，您可以在本仓库使用**4个数据集**、**最新协同感知方法**、**多模态数据**。这是目前最完整的协作感知框架。
+>通过代码集成，您可以在本仓库使用**4个数据集**、**最新协同感知方法**、**多模态数据**。
 
 [OpenReview](https://openreview.net/forum?id=KkrDUGIASk) | [ArXiv](https://arxiv.org/abs/2401.13964) | [Zhihu](https://zhuanlan.zhihu.com/p/682084451)
 
@@ -45,7 +45,6 @@ Through powerful code integration, you can access **4 datasets**, **the latest c
   - [x] [DiscoNet [NeurIPS2022]](https://arxiv.org/abs/2111.00643)
   - [x] [V2X-ViT [ECCV2022]](https://github.com/DerrickXuNu/v2x-vit)
   - [x] [CoAlign [ICRA2023]](https://arxiv.org/abs/2211.07214)
-  - [x] [Where2Comm [NeurIPS2023]](https://arxiv.org/abs/2209.12836)
   - [x] [HEAL [ICLR2024]](https://openreview.net/forum?id=KkrDUGIASk)
 
 ## Data Preparation
