@@ -48,7 +48,7 @@ Through powerful code integration, you can access **4 datasets**, **the latest c
   - [x] [HEAL [ICLR2024]](https://openreview.net/forum?id=KkrDUGIASk)
 
 ## Data Preparation
-- OPV2V: Please refer to [this repo](https://github.com/DerrickXuNu/OpenCOOD).
+- OPV2V: Please refer to [this repo](https://github.com/DerrickXuNu/OpenCOOD). You also need to download `additional-001.zip` which stores data for camera modality.
 - OPV2V-H: We store our data in [Huggingface Hub](https://huggingface.co/datasets/yifanlu/OPV2V-H). Please refer to [Downloading datasets](https://huggingface.co/docs/hub/datasets-downloading) tutorial for the usage.
 - V2XSet: Please refer to [this repo](https://github.com/DerrickXuNu/v2x-vit).
 - V2X-Sim 2.0: Download the data from [this page](https://ai4ce.github.io/V2X-Sim/). Also download pickle files from [google drive](https://drive.google.com/drive/folders/16_KkyjV9gVFxvj2YDCzQm1s9bVTwI0Fw?usp=sharing).
